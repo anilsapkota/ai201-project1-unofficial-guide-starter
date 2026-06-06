@@ -11,6 +11,7 @@ client = chromadb.PersistentClient(path="./chroma_db")
 
 
 def build_vector_store():
+
     #delete existing collection if rebuilding
     try:
         client.delete_collection(COLLECTION_NAME)
@@ -48,6 +49,43 @@ def build_vector_store():
     
     print(f"Done! {len(all_chunks)} chunks stored in ChromaDB.")
 
+def query(question: str):
+    collection = client.get_collection(COLLECTION_NAME)
+    question_embedding = model.encode(question).tolist() 
+
+    results = collection.query(
+        query_embeddings= [question_embedding],
+        n_results = TOP_K,
+        include=["documents","metadatas","distances"]
+    )
+
+    chunks = []
+    for doc, meta, dist in zip(
+        results["documents"][0],
+        results["metadatas"][0],
+        results["distances"][0]
+    ):
+        chunks.append({
+            "text":doc,
+            "source":meta["source"],
+            "distance": round(dist,4)
+        })
+    
+    return chunks 
+
 
 if __name__ == "__main__":
-    build_vector_store()
+    #build_vector_store()
+
+    test_questions = [
+        "How do i reproject a layer in QGIS?",
+        "How do i filter images by date in Google Earth Engine?",
+        "What is a choropleth map?"
+    ]
+
+    for question in test_questions:
+        print(f"Q: {question}")
+        results = query(question)
+        for r in results:
+            print(f" [{r['distance']}] ({r['source']}) {r['text'][:100]}...")
+        print()
