@@ -11,5 +11,4 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
 
 
-#--Documents---
-DOCS_PATH = "./documents"
+
