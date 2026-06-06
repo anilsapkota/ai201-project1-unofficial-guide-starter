@@ -39,8 +39,15 @@ def build_vector_store():
     print(f"Embedding {len(all_chunks)} chunks...")
     embeddings = model.encode(texts).tolist()
     
+    collection.add(
+        documents = texts,   #the raw text of each chunk(stored so you can read it later)
+        embeddings=embeddings, # the vectors used for similiarity text
+        metadatas=[{"source": s}for s in sources],  #metadata is used for citation 
+        ids = ids
+    )
     
+    print(f"Done! {len(all_chunks)} chunks stored in ChromaDB.")
 
 
 if __name__ == "__main__":
-    main()
+    build_vector_store()

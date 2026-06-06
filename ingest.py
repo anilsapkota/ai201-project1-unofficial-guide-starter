@@ -99,30 +99,30 @@ SOURCES = [
     {"url": "https://courses.spatialthoughts.com/gee-water-resources-management.html", "name": "gee-water-resources"},
 ]
 
-if __name__ =="__main__":
-    all_chunks = []
+# if __name__ =="__main__":
+#     all_chunks = []
 
-    for source in SOURCES:
-        print(f"Fetching :{source['name']} ..")
-        try:
-            text = fetch_and_clean(source["url"])
-            chunks = chunk_text(text, source=source["name"])
-            all_chunks.extend(chunks)
-            print(f" -> {len(chunks)} chunks")
-        except Exception as e:
-            print(f"FAILED:{e}")
-    # Check per-source breakdown
+#     for source in SOURCES:
+#         print(f"Fetching :{source['name']} ..")
+#         try:
+#             text = fetch_and_clean(source["url"])
+#             chunks = chunk_text(text, source=source["name"])
+#             all_chunks.extend(chunks)
+#             print(f" -> {len(chunks)} chunks")
+#         except Exception as e:
+#             print(f"FAILED:{e}")
+#     # Check per-source breakdown
     
-    source_counts = Counter(chunk["source"] for chunk in all_chunks)
-    for source, count in sorted(source_counts.items(), key=lambda x: -x[1]):
-        print(f"{source}: {count} chunks")
+#     source_counts = Counter(chunk["source"] for chunk in all_chunks)
+#     for source, count in sorted(source_counts.items(), key=lambda x: -x[1]):
+#         print(f"{source}: {count} chunks")
     
-    gee_chunks = [c for c in all_chunks if c["source"] == "end-to-end-gee"]
-    for i in [0, 50, 100, 300, 600]:
-        print(f"--- Chunk {i} ---")
-        print(gee_chunks[i]["text"])
-        print()
+#     gee_chunks = [c for c in all_chunks if c["source"] == "end-to-end-gee"]
+#     for i in [0, 50, 100, 300, 600]:
+#         print(f"--- Chunk {i} ---")
+#         print(gee_chunks[i]["text"])
+#         print()
 
-    print(f"Total Chunks : {len(all_chunks)}\n")
+#     print(f"Total Chunks : {len(all_chunks)}\n")
 
     
