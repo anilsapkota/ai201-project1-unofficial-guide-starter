@@ -38,7 +38,7 @@ def fetch_and_clean(url:str) ->str:
 
     return clean 
 
-
+#buidling sentence aware 500 characters, 2 sentence overlaps chunking
 def chunk_text(text: str, source: str, chunk_size: int = 500, overlap_sentences: int= 2):
     """
     Splits text into chunks on sentence boundaries.
