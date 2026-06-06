@@ -1,6 +1,12 @@
 import chromadb
 from sentence_transformers import SentenceTransformer
 from ingest import fetch_and_clean, chunk_text, SOURCES 
+import os 
+from dotenv import load_dotenv
+load_dotenv() 
+from openai import OpenAI
+from config import OPENAI_API_KEY
+
 
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
 COLLECTION_NAME = "geospatial_guide"
@@ -8,6 +14,13 @@ TOP_K = 5
 
 model = SentenceTransformer(EMBEDDING_MODEL)
 client = chromadb.PersistentClient(path="./chroma_db")
+
+openai_client = OpenAI() 
+
+
+
+#--LLM--
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY") 
 
 
 def build_vector_store():
@@ -74,9 +87,40 @@ def query(question: str):
     return chunks 
 
 
+def generate(question: str, chunks: list):
+    context = "\n\n".join([
+        f"Source: {c['source']}\n{c['text']}"
+        for c in chunks
+    ])
+
+    prompt = f""" You are helpful geospatial learning assistant.
+    Answer the questions using ONLY the information provided in the sources below.
+    If the sources don't contain enough information to answer, say "I don't know the answer"
+    Always mention the source your answer comes from 
+
+    Sources:
+    {context}
+
+    Question: {question}
+
+     """
+    
+    response = openai_client.responses.create(
+        model = 'gpt-5.4-mini',
+        input = prompt
+    
+    )
+
+    return response.output_text
+    
+    
+    
+    
+   
+
 if __name__ == "__main__":
     #build_vector_store()
-
+   
     test_questions = [
         "How do i reproject a layer in QGIS?",
         "How do i filter images by date in Google Earth Engine?",
@@ -85,7 +129,7 @@ if __name__ == "__main__":
 
     for question in test_questions:
         print(f"Q: {question}")
-        results = query(question)
-        for r in results:
-            print(f" [{r['distance']}] ({r['source']}) {r['text'][:100]}...")
+        chunks = query(question)
+        answer = generate(question, chunks)
+        print(f"A {answer}")
         print()
