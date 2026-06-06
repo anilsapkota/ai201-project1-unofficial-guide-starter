@@ -12,6 +12,8 @@
 <!-- What domain did you choose? Why is this knowledge valuable and hard to find through official channels? -->
 
 ---
+GeoSpatial Analysis is the domain of my choice. I am starting to learn about geospatial analysis and want to build my own knowledge base for it. Official channels have 
+lots of theory and not a practical focused content and these are applied geopstial analysis courses rather than theororitical concepts.
 
 ## Documents
 
@@ -20,16 +22,16 @@
 
 | # | Source | Description | URL or location |
 |---|--------|-------------|-----------------|
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
-| 4 | | | |
-| 5 | | | |
-| 6 | | | |
-| 7 | | | |
-| 8 | | | |
-| 9 | | | |
-| 10 | | | |
+| 1 |Spatial Thoughts  | Intro to QGIS|https://courses.spatialthoughts.com/introduction-to-qgis.html |
+| 2 |Spatial Thoughts |Advanced QGIS |https://courses.spatialthoughts.com/advanced-qgis.html |
+| 3 |Spatial Thoughts |PyQGIS MasterClass |https://courses.spatialthoughts.com/pyqgis-masterclass.html |
+| 4 |Spatial Thoughts |Python Foundation for Spatial Analysis |https://courses.spatialthoughts.com/python-foundation.html |
+| 5 |Spatial Thoughts |Mapping and Data Visualization with Python |https://courses.spatialthoughts.com/python-dataviz.html |
+| 6 |Spatial Thoughts |Cloud Native Remote Sensing with Python |https://courses.spatialthoughts.com/python-remote-sensing.html |
+| 7 |Spatial Thoughts |Mastering GDAL |https://courses.spatialthoughts.com/gdal-tools.html |
+| 8 |Spatial Thoughts |End to End Google Earth Engine | https://courses.spatialthoughts.com/gdal-tools.html|
+| 9 |Spatial Thoughts|Creating Publication Quality Charts with GEE |https://courses.spatialthoughts.com/gee-charts.html |
+| 10 |Spatial Thoughts |Google Earth Engine for Water Resources Management |https://courses.spatialthoughts.com/gee-water-resources-management.html |
 
 ---
 
