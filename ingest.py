@@ -1,7 +1,7 @@
 import requests 
 from bs4 import BeautifulSoup 
 import nltk 
-nltk.download('punk_tab', quiet=True)
+nltk.download('punkt_tab', quiet=True)
 from nltk.tokenize import sent_tokenize 
 import os 
 
@@ -39,14 +39,20 @@ def chunk_text(text: str, source: str, chunk_size: int = 500, overlap_sentences:
     - overlap_sentences: how many sentences from the previous chunk to prepend to the next one
     """
 
+
+    #splits the entire cleaned text into a list of sentences.
     sentences = sent_tokenize(text)
 
+    #
     chunks = []  
     current_sentences = []
     current_length = 0
 
     for sentence in sentences: 
-        if current_length + len(sentence) > chunk_size and current_sentences:
+        #checks to if we add further would it be greater than 500 characters  and do we have at least one sentence already.
+        #if so we will save the current chunk 
+        
+        if current_length + len(sentence) > chunk_size and current_sentences: 
             chunk_text_str = " ".join(current_sentences).strip()
             if len(chunk_text_str)>50:
                 chunks.append({
