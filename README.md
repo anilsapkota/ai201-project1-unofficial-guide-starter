@@ -167,3 +167,25 @@ The spec did not anticipate the HTML structure of the Spatial Thoughts pages, sp
 - *What I gave the AI:* The architecture diagram from planning.md showing `gpt-4o-mini` as the generation model, plus a request to implement the `generate()` function using the OpenAI Responses API.
 - *What it produced:* An initial implementation using an outdated method signature (`openai.ChatCompletion.create`) that no longer matched the current SDK.
 - *What I changed or overrode:* I pushed Claude to look up the current Responses API documentation. The corrected version used `client.responses.create` with the proper `input` parameter structure. I also added explicit source citation formatting to the system prompt, which was not in Claude's first draft.
+
+## Evaluation Report
+
+| # | Question | Expected Answer | System Response | Judgment |
+|---|----------|-----------------|-----------------|----------|
+| 1 | How do I reproject a layer in QGIS? | Use Vector general → Reproject layer in Processing Toolbox, select target CRS | Correct step-by-step instructions, cited introduction-to-qgis | ✅ Accurate |
+| 2 | How do I filter images by date in Google Earth Engine? | Use ee.Filter.date(startDate, endDate) | Correct with code examples, cited end-to-end-gee and gee-charts | ✅ Accurate |
+| 3 | What is a choropleth map? | A map where polygons are colored based on a data column value | Correct definition with source quote, cited python-dataviz | ✅ Accurate |
+| 4 | How to merge tiles in GDAL? | Create text files with *.hgt files and run gdalbuildvrt command | Correct about Virtual Raster and gdalbuildvrt but missing *.hgt specific detail | ⚠️ Partially Accurate |
+| 5 | What is XArray? | Python library for gridded raster datasets with native time-series support | Correct, added dask parallel computing detail, cited python-remote-sensing | ✅ Accurate |
+
+### Failure Case Analysis
+
+**Question 4 — How to merge tiles in GDAL?**
+
+The system correctly retrieved chunks from `mastering-gdal` and identified the 
+`gdalbuildvrt` command and Virtual Raster approach. However, the specific detail 
+about creating a text file listing `*.hgt` format files was missing from the 
+retrieved chunks. This is a chunk boundary failure — the specific `*.hgt` detail 
+likely appeared in a different part of the page that was split into a separate 
+chunk which ranked below the top-5 retrieved results. Increasing TOP_K or chunk 
+size might surface this detail.
