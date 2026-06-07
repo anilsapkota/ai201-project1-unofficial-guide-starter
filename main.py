@@ -95,6 +95,8 @@ def generate(question: str, chunks: list):
 
     prompt = f""" You are helpful geospatial learning assistant.
     Answer the questions using ONLY the information provided in the sources below.
+    Do NOT use any outside knowledge or training data.
+    Do NOT recommend resources not mentioned in the sources.
     If the sources don't contain enough information to answer, say "I don't know the answer"
     Always mention the source your answer comes from 
 

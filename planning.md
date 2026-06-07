@@ -180,3 +180,7 @@ I had to push Claude to find the latest API documentation since initial suggesti
 used outdated method signatures. I verified grounding by checking that answers 
 cited specific source documents and matched content from retrieved chunks rather 
 than general LLM knowledge.
+
+
+When asking broad questions like 'How to use Python for geospatial analysis?', 
+the system retrieves chunks from python-foundation that contain links to external courses (University of Helsinki, Kaggle). The LLM faithfully reports these as part of the answer, which may mislead users into thinking those resources are part of the knowledge base. This is a retrieval issue — the source document itself references external resources, and the chunking strategy does not filter them out
