@@ -42,12 +42,20 @@ lots of theory and not a practical focused content and these are applied geopsti
      numbers fit the structure of your documents.
      A review-heavy corpus warrants different chunking than a long FAQ. -->
 
-**Chunk size:**
+For my chunking we are using sentence based chunking strategy.
 
-**Overlap:**
+**Chunk size: 500 characters
+
+**Overlap: 2 sentences
 
 **Reasoning:**
-
+The source documents are practical tutorial courses containing step-by-step 
+instructions, code snippets, and concept explanations. Sentence-aware chunking 
+was chosen over fixed-size character splitting because it waits until a sentence 
+is complete before starting a new chunk, avoiding incomplete sentences that would 
+be meaningless to retrieve. A 500 character limit keeps chunks focused on one idea 
+without blending unrelated topics. Two sentences of overlap ensure that information 
+spanning a chunk boundary is captured in at least one complete chunk.
 ---
 
 ## Retrieval Approach
@@ -58,12 +66,23 @@ lots of theory and not a practical focused content and these are applied geopsti
      would you weigh in choosing a different embedding model — context length, multilingual
      support, accuracy on domain-specific text, latency? -->
 
-**Embedding model:**
+**Embedding model:all-MiniLM-L6-v2
 
-**Top-k:**
+**Top-k: 5 
 
 **Production tradeoff reflection:**
+The current model (all-MiniLM-L6-v2) is a general-purpose embedding model that 
+works well for everyday English text. In production, I would consider two tradeoffs:
 
+1. **Domain-specific accuracy:** Geospatial tutorials contain technical terms like 
+EPSG codes, GEE API calls, and GDAL commands. A general model may not embed these 
+as precisely as a model trained on geospatial or code-heavy text, potentially 
+returning weaker matches for technical queries.
+
+2. **Multilingual support:** Geospatial tools like QGIS and Google Earth Engine are 
+used globally. A production system serving non-English speakers would need a 
+multilingual model like paraphrase-multilingual-MiniLM-L12-v2, which all-MiniLM-L6-v2 
+does not support.
 ---
 
 ## Evaluation Plan
@@ -75,11 +94,11 @@ lots of theory and not a practical focused content and these are applied geopsti
 
 | # | Question | Expected answer |
 |---|----------|-----------------|
-| 1 | | |
-| 2 | | |
-| 3 | | |
-| 4 | | |
-| 5 | | |
+| 1 | How do i reproject a layer in QGIS?| Use Vector general → Reproject layer in Processing Toolbox, select target CRS|
+| 2 | How do I filter images by date in Google Earth Engine?|Use ee.Filter.date(startDate, endDate) |
+| 3 |What is a choropleth map? | A map where polygons are colored based on a data column value|
+| 4 | How to merge tiles in GDAL? | We need to create text files containing all the files we want to merge that are in *.hgt format and run gdalbuiltvrt command|
+| 5 |What is XArray?  |XArray is a Python library to work with gridded raster datasets which can natively handle time-series data making for Remote Sensing data. |
 
 ---
 
@@ -89,9 +108,14 @@ lots of theory and not a practical focused content and these are applied geopsti
      Consider: noisy or inconsistent documents, missing source attribution, off-topic
      retrieval, chunks that split key information across boundaries. -->
 
-1.
+1. The table of contents appearing in ingested content posed a retrieval risk — 
+TOC entries contain only topic titles without substance, so if retrieved they would 
+give the LLM no useful context to answer from.
 
-2.
+2. Code snippets on Spatial Thoughts pages are rendered with each token in a 
+separate HTML span tag, which when extracted produces fragmented text like 
+"addLayer \n (admin2 \n , \n {". This breaks semantic matching for code-related 
+queries since the embedding model cannot interpret scattered tokens as meaningful code.
 
 ---
 
