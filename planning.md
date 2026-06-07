@@ -183,4 +183,7 @@ than general LLM knowledge.
 
 
 When asking broad questions like 'How to use Python for geospatial analysis?', 
-the system retrieves chunks from python-foundation that contain links to external courses (University of Helsinki, Kaggle). The LLM faithfully reports these as part of the answer, which may mislead users into thinking those resources are part of the knowledge base. This is a retrieval issue — the source document itself references external resources, and the chunking strategy does not filter them out
+the system retrieves chunks from python-foundation that contain links to external courses (University of Helsinki, Kaggle). The LLM faithfully reports these as part of the answer, which may mislead users into thinking those resources are part of the knowledge base. This is a retrieval issue — the source document itself references external resources, and the chunking strategy does not filter them out.
+
+
+
