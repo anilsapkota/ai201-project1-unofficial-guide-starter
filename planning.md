@@ -129,6 +129,22 @@ queries since the embedding model cannot interpret scattered tokens as meaningfu
 
 ---
 
+```
+URLs (Spatial Thoughts)
+        ↓
+[1] INGESTION — requests + BeautifulSoup
+        ↓
+[2] CHUNKING — nltk sent_tokenize (500 chars, 2-sentence overlap)
+        ↓
+[3] EMBEDDING — sentence-transformers (all-MiniLM-L6-v2)
+        ↓
+[4] VECTOR STORE — ChromaDB (PersistentClient)
+        ↓
+[5] GENERATION — OpenAI gpt-4o-mini (Responses API)
+        ↓
+    Answer + Source Citation
+```
+
 ## AI Tool Plan
 
 <!-- For each part of the pipeline below, describe:
@@ -137,12 +153,30 @@ queries since the embedding model cannot interpret scattered tokens as meaningfu
      - What you expect it to produce
      - How you'll verify the output matches your spec
 
+     
+
      "I'll use AI to help me code" is not a plan.
      "I'll give Claude my Chunking Strategy section and ask it to implement chunk_text()
      with my specified chunk size and overlap" is a plan. -->
 
+
 **Milestone 3 — Ingestion and chunking:**
+I used Claude to guide the implementation of fetch_and_clean() and chunk_text() 
+incrementally. Rather than providing the full planning.md, I described the domain 
+(geospatial tutorial content from Spatial Thoughts) and asked Claude to explain 
+each concept before writing code. I verified outputs at each step by printing 
+sample chunks and checking for noise like TOC entries and fragmented code blocks.
 
 **Milestone 4 — Embedding and retrieval:**
+I used Claude to explain how SentenceTransformer and ChromaDB work before 
+implementing them. Code was built line by line rather than generated all at once, 
+which helped me understand what each piece does. I verified retrieval by checking 
+distance scores and confirming returned chunks were topically relevant to each 
+test question.
 
 **Milestone 5 — Generation and interface:**
+I used Claude to implement the generate() function using the OpenAI Responses API. 
+I had to push Claude to find the latest API documentation since initial suggestions 
+used outdated method signatures. I verified grounding by checking that answers 
+cited specific source documents and matched content from retrieved chunks rather 
+than general LLM knowledge.
